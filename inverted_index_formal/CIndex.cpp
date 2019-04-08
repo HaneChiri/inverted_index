@@ -199,50 +199,26 @@ int CIndex::mergeSimilarTerms()
 
 		it_cur++;
 	}
-
-
-	/*之前写的有问题代码
-	for (int i = 0; i < indexList.size()-1; i++)
-	{
-		item1 = indexList[i];
-		item2 = indexList[i + 1];
-		int j = 1;//j是相对于item1的偏移量
-		while (item1.term == item2.term)
-		{
-			vector<int> temp(item1.posting.size()+item2.posting.size());
-			sort(item1.posting.begin(), item1.posting.end());
-			sort(item2.posting.begin(), item2.posting.end());
-			
-			merge(item1.posting.begin(), item1.posting.end(), item2.posting.begin(), item2.posting.end(), temp.begin());
-			indexList[i].posting.assign(temp.begin(), temp.end());
-			indexList.erase(indexList.begin()+i+j);
-			indexList[i].frequence++;
-			
-			item2 = indexList[i + j];
-		}
-		j = 1;
-	}
-	*/
 	return 0;
 }
 
 
-vector<IndexItem>::iterator* CIndex::findTerm(string term)
+int CIndex::findTerm(string term)
 {//未修复不可用，请注意
 	mergeSimilarTerms();
-	vector<IndexItem>::iterator it=indexList.begin();
-	while (it != indexList.end())
+	iter_temp=indexList.begin();
+	while (iter_temp != indexList.end())
 	{
 		//【todo】可优化为二分查找
-		if ((*it).term == term)
+		if ((*iter_temp).term == term)
 		{
-			return &it;
+			return 0;
 		}
 		
-		it++;
+		iter_temp++;
 	}
 
-	return NULL;
+	return -1;
 }
 
 
