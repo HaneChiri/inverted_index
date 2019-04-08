@@ -18,7 +18,7 @@ class CIndex
 {
 	vector<IndexItem> indexList;//索引表
 	vector<Document> collection;//文档集
-	vector<IndexItem>::iterator iter_term;//用于临时存储迭代器
+	vector<IndexItem>::iterator iter_result;//用于临时存储迭代器
 public:
 	//利用文件名数组初始化文档集
 	CIndex(string p_collection[], int n);
@@ -35,7 +35,7 @@ public:
 	//索引表合并同类项
 	int mergeSimilarTerms();
 	//查找某个词项，不可用
-	vector<IndexItem>::iterator* findTerm(string term);
+	bool findTerm(string term);
 	//布尔查询and
 	vector<int> bool_and(string term1, string term2);
 

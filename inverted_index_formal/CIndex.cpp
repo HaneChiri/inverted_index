@@ -201,62 +201,63 @@ int CIndex::mergeSimilarTerms()
 	}
 	return 0;
 }
+//@name <CIndex::findTerm>
+//@brief <找到词项并将结果的迭代器存储在iter_result中>
+//@param <term:要查找的词项>
+//@return <是否找到>
 
-
-int CIndex::findTerm(string term)
-{//未修复不可用，请注意
+bool CIndex::findTerm(string term)
+{
 	mergeSimilarTerms();
-	iter_temp=indexList.begin();
-	while (iter_temp != indexList.end())
+	iter_result=indexList.begin();
+	while (iter_result != indexList.end())
 	{
 		//【todo】可优化为二分查找
-		if ((*iter_temp).term == term)
+		if ((*iter_result).term == term)
 		{
-			return 0;
+			return true;
 		}
 		
-		iter_temp++;
+		iter_result++;
 	}
 
-	return -1;
+	return false;
 }
 
-
+//@name <CIndex::bool_and>
+//@brief <查找同时出现两个词项的文档>
+//@param <要查找的两个词项>
+//@return <posting的交集>
 
 vector<int> CIndex::bool_and(string term1, string term2)
 {
 	mergeSimilarTerms();
 	vector<IndexItem>::iterator it_term1;
 	vector<IndexItem>::iterator it_term2;
-	vector<IndexItem>::iterator it = indexList.begin();
-	while (it != indexList.end())
+	if (findTerm(term1))
 	{
-		//【todo】可优化为二分查找
-		if ((*it).term == term1)
-		{
-			it_term1 = it;
-			break;
-		}
-		it++;
+		it_term1 = iter_result;
 	}
-	it = indexList.begin();
-	while (it != indexList.end())
+	else
 	{
-		//【todo】可优化为二分查找
-		if ((*it).term == term2)
-		{
-			it_term2 = it;
-			break;
-		}
-		it++;
+		cerr << "无法找到词项：" << term1 << endl;
+		exit(-1);
 	}
-
-
+	if (findTerm(term2))
+	{
+		it_term2 = iter_result;
+	}
+	else
+	{
+		cerr << "无法找到词项：" << term2 << endl;
+		exit(-1);
+	}
 
 	vector<int>::iterator p1 = (*it_term1).posting.begin();
 	vector<int>::iterator p2 = (*it_term2).posting.begin();
 	vector<int> res;
 
+	//求两个词项posting的交集
 	while (p1 != (*it_term1).posting.end() && p2 != (*it_term2).posting.end())
 	{
 		if ((*p1) == (*p2))
