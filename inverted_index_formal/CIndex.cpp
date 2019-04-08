@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
 
@@ -205,11 +206,11 @@ int CIndex::mergeSimilarTerms()
 //@brief <找到词项并将结果的迭代器存储在iter_result中>
 //@param <term:要查找的词项>
 //@return <是否找到>
-
 bool CIndex::findTerm(string term)
 {
 	mergeSimilarTerms();
 	iter_result=indexList.begin();
+
 	while (iter_result != indexList.end())
 	{
 		//【todo】可优化为二分查找
@@ -277,6 +278,18 @@ vector<int> CIndex::bool_and(string term1, string term2)
 	}
 
 
+	return res;
+}
+
+
+//施工中
+vector<int> CIndex::bool_and(string terms)
+{
+	vector<int> res;
+	stringstream ss(terms);//初始化字符串流
+	
+	
+	
 	return res;
 }
 

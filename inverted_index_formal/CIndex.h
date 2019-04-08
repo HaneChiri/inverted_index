@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <stdarg.h>
 using namespace std;
 struct Document
 {
@@ -34,11 +35,11 @@ public:
 	int sortIndex();
 	//索引表合并同类项
 	int mergeSimilarTerms();
-	//查找某个词项，不可用
+	//查找某个词项
 	bool findTerm(string term);
 	//布尔查询and
 	vector<int> bool_and(string term1, string term2);
-
+	vector<int> bool_and(string multiTerm);//施工中
 	//多个词项and
 	~CIndex();
 };
